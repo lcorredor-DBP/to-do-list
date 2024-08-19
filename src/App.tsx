@@ -21,9 +21,21 @@ function App(): React.ReactElement | null {
     useState(false);
   const [showToast, setShowToast] = useState(false);
   const [messageAction, setMessageAction] = useState<string>("");
+  const [isDeletedAll, setIsDelletedAll] = useState(false);
 
   const handleOpenModalNewItem = () => {
     setOpenModalNewItem(!openModalNewItem);
+    setIsEditing(false);
+  };
+
+  const handleConfirmationModalAll = () => {
+    setIsDelletedAll(true);
+    setOpenModalConfirmationDelete(true);
+  };
+
+  const handleDeleteAllItems = () => {
+    setTasks([]);
+    setIsDelletedAll(false);
   };
 
   const handleOpenMoreAction = (index: number) => {
@@ -46,7 +58,7 @@ function App(): React.ReactElement | null {
   ) => {
     setEditItem({ text, createdAt, completed: false });
     setIsEditing(true);
-    handleOpenModalNewItem();
+    setOpenModalNewItem(!openModalNewItem);
     setActiveItemIndex(index);
   };
 
@@ -55,11 +67,14 @@ function App(): React.ReactElement | null {
   };
 
   const handleDeleteItem = () => {
-    setTasks(tasks.filter((_, i) => i !== activeItemIndex));
+    isDeletedAll
+      ? handleDeleteAllItems()
+      : setTasks(tasks.filter((_, i) => i !== activeItemIndex));
+
     handleCloseMoreAction();
     setOpenModalConfirmationDelete(false);
     setShowToast(true);
-    setMessageAction("Item deleted successfully");
+    setMessageAction("Deleted successfully");
   };
 
   const handleSaveItem = (newText: string, index?: number) => {
@@ -122,7 +137,7 @@ function App(): React.ReactElement | null {
 
   return (
     <div className="w-full py-5 md:px-0 px-4">
-      <div className="w-full md:w-1/2 mx-auto py-12 bg-white bg-img flex items-center justify-center gap-2 border-b border-gray-200">
+      <div className="w-full mx-auto py-12 bg-white bg-img flex items-center justify-center gap-2 border-b border-gray-200 fixed z-0">
         <h2 className="text-xl md:text-lg leading-5 font-semibold text-gray-900 text-center">
           To do List
         </h2>
@@ -141,16 +156,16 @@ function App(): React.ReactElement | null {
         </svg>
       </div>
 
-      <div className="w-full md:w-1/2 flex mx-auto py-4 md:px-0 px-2">
+      <div className="w-full md:w-1/2 flex mx-auto py-4 md:px-0 px-2 fixed left-1/2 transform -translate-x-1/2 top-[145px] bg-white border-b border-gray-100">
         <div className="w-1/2">
           <p className="text-sm font-medium my-auto py-2">
             {tasks.length} items in the list
           </p>
         </div>
 
-        <div className="w-1/2 flex justify-end">
+        <div className="w-1/2 flex justify-end gap-3">
           <button
-            className="rounded bg-green-600 border-green-600 hover:bg-green-500 transition ease-in text-white font-medium py-2 px-3 text-sm gap-2 flex"
+            className="rounded bg-neutral-100 border-neutral-300 border text-black hover:border-green-600 hover:bg-green-500 transition ease-in hover:text-white font-medium py-2 px-3 text-sm gap-2 flex"
             onClick={handleOpenModalNewItem}
           >
             <svg
@@ -167,6 +182,29 @@ function App(): React.ReactElement | null {
             </svg>
             New item
           </button>
+
+          {tasks.length > 1 && (
+            <button
+              className="rounded bg-neutral-100 border-neutral-300 border text-black hover:border-red-600 hover:bg-red-500 transition ease-in hover:text-white font-medium py-2 px-3 text-sm gap-2 flex items-center"
+              onClick={handleConfirmationModalAll}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="w-4 h-4 my-auto"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                />
+              </svg>
+              Delete all
+            </button>
+          )}
         </div>
       </div>
 
@@ -184,6 +222,7 @@ function App(): React.ReactElement | null {
         <ModalConfirmationDeleteItem
           onClose={() => setOpenModalConfirmationDelete(false)}
           onDelete={() => handleDeleteItem()}
+          isDeletedAll={isDeletedAll}
         />
       )}
 
@@ -196,7 +235,7 @@ function App(): React.ReactElement | null {
       )}
 
       {tasks.length ? (
-        <div className="w-full md:w-1/2 max-h-[500px] overflow-y-auto mx-auto py-2 px-4 space-y-3">
+        <div className="w-full md:w-1/2 mx-auto py-2 px-4 space-y-3 mt-52">
           {tasks
             .sort((a, b) =>
               a.completed === b.completed ? 0 : a.completed ? 1 : -1
@@ -333,9 +372,23 @@ function App(): React.ReactElement | null {
                     </div>
                   ) : (
                     <button
-                      className="border px-4 py-2 text-xs text-black bg-neutral-100 border-neutral-300 rounded"
+                      className="border px-3 py-2 text-xs text-black bg-neutral-100 border-neutral-300 rounded flex items-center gap-2"
                       onClick={() => handleOpenMoreAction(index)}
                     >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="currentColor"
+                        className="h-4 w-4"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+                        />
+                      </svg>
                       Actions
                     </button>
                   )}
@@ -344,7 +397,7 @@ function App(): React.ReactElement | null {
             ))}
         </div>
       ) : (
-        <div className="w-full md:px-0 md:w-1/2 border bg-gray-100 p-12 rounded mx-auto mt-0 items-center justify-center flex flex-col space-y-3">
+        <div className="w-full mt-56 md:px-0 md:w-1/2 border bg-gray-100 p-12 rounded mx-auto items-center justify-center flex flex-col space-y-3">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

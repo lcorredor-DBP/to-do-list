@@ -95,8 +95,11 @@ const ModalNewItem: FC<ModalNewItemProps> = ({
           </button>
 
           <button
-            className="bg-green-600 border-green-600 border text-sm font-medium rounded px-4 py-2 text-white hover:bg-green-400 transition ease-in"
+            className={`${
+              itemName.trim() ? "bg-green-600 hover:bg-green-400" : "bg-gray-400 cursor-not-allowed"
+            } border text-sm font-medium rounded px-4 py-2 text-white transition ease-in`}
             onClick={handleSave}
+            disabled={!itemName.trim()}
           >
             Save
           </button>

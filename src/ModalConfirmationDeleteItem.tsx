@@ -3,11 +3,13 @@ import React, { FC } from "react";
 interface ModalConfirmationDeleteItemProps {
   onClose: () => void;
   onDelete: () => void;
+  isDeletedAll?: boolean;
 }
 
 const ModalConfirmationDeleteItem: FC<ModalConfirmationDeleteItemProps> = ({
   onClose,
   onDelete,
+  isDeletedAll,
 }) => {
   return (
     <div
@@ -23,7 +25,7 @@ const ModalConfirmationDeleteItem: FC<ModalConfirmationDeleteItemProps> = ({
         <div className="w-full flex">
           <div className="w-1/2 flex justify-start">
             <h1 className="text-black font-medium text-lg">
-              Delete Item
+              {isDeletedAll ? 'Delete all items' : 'Delete item' }
             </h1>
           </div>
 
@@ -51,7 +53,7 @@ const ModalConfirmationDeleteItem: FC<ModalConfirmationDeleteItemProps> = ({
         </div>
 
         <div className="w-full border-t border-gray-200 mt-4 py-4 space-y-2">
-          <p className="text-black font-medium text-xl text-center">Are you sure to delete the item list?</p>
+          <p className="text-black font-medium text-xl text-center">{isDeletedAll ? 'Are you sure to delete all the items in list?' : 'Are you sure to delete the item list?'}</p>
         </div>
 
         <div className="w-full flex justify-center gap-3">
