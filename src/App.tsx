@@ -136,8 +136,8 @@ function App(): React.ReactElement | null {
   };
 
   return (
-    <div className="w-full py-5 md:px-0 px-4">
-      <div className="w-full mx-auto py-12 bg-white bg-img flex items-center justify-center gap-2 border-b border-gray-200 fixed z-0">
+    <div className="w-full pb-5 px-0">
+      <div className="w-full mx-auto py-12 bg-white bg-img flex items-center justify-center gap-2 border-b border-gray-200 fixed z-0 top-0">
         <h2 className="text-xl md:text-lg leading-5 font-semibold text-gray-900 text-center">
           To do List
         </h2>
@@ -156,7 +156,7 @@ function App(): React.ReactElement | null {
         </svg>
       </div>
 
-      <div className="w-full md:w-1/2 flex mx-auto py-4 md:px-0 px-2 fixed left-1/2 transform -translate-x-1/2 top-[145px] bg-white border-b border-gray-100">
+      <div className="w-full md:w-1/2 flex mx-auto py-4 md:px-0 px-4 fixed left-1/2 transform -translate-x-1/2 top-[130px] bg-white border-b border-gray-100">
         <div className="w-1/2">
           <p className="text-sm font-medium my-auto py-2">
             {tasks.length} items in the list
@@ -180,7 +180,7 @@ function App(): React.ReactElement | null {
                 clipRule="evenodd"
               />
             </svg>
-            New item
+            <span className="hidden sm:block">New item</span>
           </button>
 
           {tasks.length > 1 && (
@@ -202,7 +202,7 @@ function App(): React.ReactElement | null {
                   d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
                 />
               </svg>
-              Delete all
+              <span className="hidden sm:block">Delete all</span>
             </button>
           )}
         </div>
@@ -389,7 +389,7 @@ function App(): React.ReactElement | null {
                           d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
                         />
                       </svg>
-                      Actions
+                      <span className="hidden sm:block">Actions</span>
                     </button>
                   )}
                 </div>
@@ -397,25 +397,27 @@ function App(): React.ReactElement | null {
             ))}
         </div>
       ) : (
-        <div className="w-full mt-56 md:px-0 md:w-1/2 border bg-gray-100 p-12 rounded mx-auto items-center justify-center flex flex-col space-y-3">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="w-12 h-12 text-center text-gray-800"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
-            />
-          </svg>
+        <div className="w-full md:px-0 px-5">
+          <div className="w-full mt-56 md:px-0 md:w-1/2 border bg-gray-100 p-12 rounded mx-auto items-center justify-center flex flex-col space-y-3">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="w-12 h-12 text-center text-gray-800"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
+              />
+            </svg>
 
-          <h4 className="text-center text-lg font-medium text-gray-600">
-            No tasks available. Add some tasks to your list.
-          </h4>
+            <h4 className="text-center text-lg font-medium text-gray-600">
+              No tasks available. Add some tasks to your list.
+            </h4>
+          </div>
         </div>
       )}
     </div>
