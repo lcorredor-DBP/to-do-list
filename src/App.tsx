@@ -183,7 +183,6 @@ function App(): React.ReactElement | null {
       {openModalConfirmationDelete && (
         <ModalConfirmationDeleteItem
           onClose={() => setOpenModalConfirmationDelete(false)}
-          index={activeItemIndex}
           onDelete={() => handleDeleteItem()}
         />
       )}

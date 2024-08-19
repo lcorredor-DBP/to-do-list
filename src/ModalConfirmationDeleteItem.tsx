@@ -2,13 +2,11 @@ import React, { FC } from "react";
 
 interface ModalConfirmationDeleteItemProps {
   onClose: () => void;
-  index: number | null;
   onDelete: () => void;
 }
 
 const ModalConfirmationDeleteItem: FC<ModalConfirmationDeleteItemProps> = ({
   onClose,
-  index,
   onDelete,
 }) => {
   return (
